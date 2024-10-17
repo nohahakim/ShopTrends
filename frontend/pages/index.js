@@ -1,9 +1,7 @@
-import Page from "../components/Page";
-
-export default function HomePage() {
+export default function IndexPage() {
   return (
-    <Page>
-      <p>Hey! I'm the home page!</p>
-    </Page>
+    <div>
+      <p>Hello!</p>
+    </div>
   );
 }
