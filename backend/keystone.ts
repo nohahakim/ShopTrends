@@ -1,34 +1,45 @@
-// keystone.ts
-
-import "dotenv/config"; // Load environment variables
-import { config, createSchema } from "@keystone-next/keystone/schema"; // Keystone core functions
-import { User } from "./schemas/User";
 import { createAuth } from "@keystone-next/auth";
+import { config, createSchema } from "@keystone-next/keystone/schema";
 import {
   withItemData,
   statelessSessions,
 } from "@keystone-next/keystone/session";
-import { Product } from "./schemas/Product";
+import { permissionsList } from "./schemas/fields";
+import { Role } from "./schemas/Role";
+import { OrderItem } from "./schemas/OrderItem";
+import { Order } from "./schemas/Order";
+import { CartItem } from "./schemas/CartItem";
 import { ProductImage } from "./schemas/ProductImage";
-import { insertSeedData } from "./seed-data"; // Import seed data function
+import { Product } from "./schemas/Product";
+import { User } from "./schemas/User";
+import "dotenv/config";
+import { insertSeedData } from "./seed-data";
+import { sendPasswordResetEmail } from "./lib/mail";
+import { extendGraphqlSchema } from "./mutations";
+
+function check(name: string) {}
 
 const databaseURL =
-  process.env.DATABASE_URL || "mongodb://localhost/keystone-shoptrends";
+  process.env.DATABASE_URL || "mongodb://localhost/keystone-sick-fits-tutorial";
 
-// Session configuration for authentication
 const sessionConfig = {
-  maxAge: 60 * 60 * 24 * 30, // Session lasts for 30 days
-  secret: process.env.COOKIE_SECRET, // Secret to sign cookies
+  maxAge: 60 * 60 * 24 * 360, // How long they stay signed in?
+  secret: process.env.COOKIE_SECRET,
 };
 
 const { withAuth } = createAuth({
-  listKey: "User", // Which list is the user stored in
-  identityField: "email", // How the user logs
-  secretField: "password", // How the user authenticates
-  sessionData: "name", // What to store in the session
-  // @ts-ignore
+  listKey: "User",
+  identityField: "email",
+  secretField: "password",
   initFirstItem: {
-    fields: ["name", "email", "password"], // Fields for the first user
+    fields: ["name", "email", "password"],
+    // TODO: Add in inital roles here
+  },
+  passwordResetLink: {
+    async sendToken(args) {
+      // send the email
+      await sendPasswordResetEmail(args.token, args.identity);
+    },
   },
 });
 
@@ -37,37 +48,40 @@ export default withAuth(
     // @ts-ignore
     server: {
       cors: {
-        origin: [process.env.FRONTEND_URL], // Allow requests from the frontend
-        credentials: true, // Allow sending cookies with requests
+        origin: [process.env.FRONTEND_URL],
+        credentials: true,
       },
     },
     db: {
       adapter: "mongoose",
       url: databaseURL,
-      async onConnect(context) {
+      async onConnect(keystone) {
         console.log("Connected to the database!");
         if (process.argv.includes("--seed-data")) {
-          await insertSeedData(context);
+          await insertSeedData(keystone);
         }
       },
     },
     lists: createSchema({
-      // Register the User list (data type)
+      // Schema items go in here
       User,
       Product,
       ProductImage,
+      CartItem,
+      OrderItem,
+      Order,
+      Role,
     }),
+    extendGraphqlSchema,
     ui: {
-      isAccessAllowed: ({ session }) => {
+      // Show the UI only for poeple who pass this test
+      isAccessAllowed: ({ session }) =>
         // console.log(session);
-        return !!session?.data;
-      },
+        !!session?.data,
     },
     session: withItemData(statelessSessions(sessionConfig), {
-      // Session configuration for authentication and user data storage in the session cookie
-      User: "id name email", // Which fields to store in the session cookie (id, name, email, etc.)
-      Product,
-      ProductImage,
+      // GraphQL Query
+      User: "id name email",
     }),
   })
 );

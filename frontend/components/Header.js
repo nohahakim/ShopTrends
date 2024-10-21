@@ -1,7 +1,23 @@
 import Link from "next/link";
-import Nav from "./Nav";
 import styled from "styled-components";
-import Logo from "./styles/LogoStyles";
+import Cart from "./Cart";
+import Nav from "./Nav";
+import Search from "./Search";
+
+const Logo = styled.h1`
+  font-size: 4rem;
+  margin-left: 2rem;
+  position: relative;
+  z-index: 2;
+  background: red;
+  transform: skew(-7deg);
+  a {
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+  }
+`;
 
 const HeaderStyles = styled.header`
   .bar {
@@ -24,15 +40,14 @@ export default function Header() {
     <HeaderStyles>
       <div className="bar">
         <Logo>
-          <Link href="/">
-            <a>TrendShop</a>
-          </Link>
+          <Link href="/">ShopTrends</Link>
         </Logo>
         <Nav />
       </div>
       <div className="sub-bar">
-        <p>Search</p>
+        <Search />
       </div>
+      <Cart />
     </HeaderStyles>
   );
 }
