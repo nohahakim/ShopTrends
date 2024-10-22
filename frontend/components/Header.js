@@ -5,7 +5,7 @@ import Nav from "./Nav";
 import Search from "./Search";
 
 const Logo = styled.h1`
-  font-size: 4rem;
+  font-size: 3.5;
   margin-left: 2rem;
   position: relative;
   z-index: 2;
