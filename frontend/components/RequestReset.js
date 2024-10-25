@@ -27,7 +27,6 @@ export default function RequestReset() {
   );
   async function handleSubmit(e) {
     e.preventDefault(); // stop the form from submitting
-    console.log(inputs);
     const res = await signup().catch(console.error);
     console.log(res);
     console.log({ data, loading, error });
@@ -59,3 +58,4 @@ export default function RequestReset() {
     </Form>
   );
 }
+export { REQUEST_RESET_MUTATION };
