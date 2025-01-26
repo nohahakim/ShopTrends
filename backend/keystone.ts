@@ -26,6 +26,7 @@ const sessionConfig = {
   maxAge: 60 * 60 * 24 * 360, // How long they stay signed in?
   secret: process.env.COOKIE_SECRET,
   sameSite: "none",
+  secure: process.env.NODE_ENV === "production",
 };
 
 const { withAuth } = createAuth({
