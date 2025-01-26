@@ -5,7 +5,7 @@
   "author": "Noha",
   "license": "MIT",
   "scripts": {
-    "dev": "keystone-next",
+    "dev": "keystone-next dev",
     "seed-data": "keystone-next --seed-data",
     "build": "keystone-next build",
     "start": "keystone-next start"
