@@ -70,6 +70,9 @@
       "./jest.setup.js"
     ]
   },
+  "engines": {
+    "node": "16.x"
+  },
   "//": "This is our babel config, I prefer this over a .babelrc file",
   "babel": {
     "env": {
