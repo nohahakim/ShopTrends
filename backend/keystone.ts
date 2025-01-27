@@ -28,6 +28,7 @@ const sessionConfig = {
   sameSite: "none",
   secure: process.env.NODE_ENV === "production",
 };
+console.log(process.env.NODE_ENV);
 
 const { withAuth } = createAuth({
   listKey: "User",
