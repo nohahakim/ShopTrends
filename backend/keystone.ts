@@ -51,7 +51,7 @@ export default withAuth(
     // @ts-ignore
     server: {
       cors: {
-        origin: "*",
+        origin: ["https://shoptrends-frontend.onrender.com"],
         credentials: true,
       },
     },
