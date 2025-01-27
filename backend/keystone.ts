@@ -28,6 +28,11 @@ const sessionConfig = {
   sameSite: "none",
   secure: process.env.NODE_ENV === "production",
 };
+console.log("process.env.NODE_ENV:", process.env.NODE_ENV);
+if (process.env.NODE_ENV === "production") {
+  console.log("NODE_ENV is set to production.");
+  console.log("Session Config in production:", sessionConfig);
+}
 
 const { withAuth } = createAuth({
   listKey: "User",
@@ -61,6 +66,11 @@ export default withAuth(
         console.log("Connected to the database!");
         if (process.argv.includes("--seed-data")) {
           await insertSeedData(keystone);
+        }
+        console.log(process.env.NODE_ENV);
+        if (process.env.NODE_ENV === "production") {
+          console.log("NODE_ENV is set to production.");
+          console.log("Session Config in production:", sessionConfig);
         }
       },
     },
