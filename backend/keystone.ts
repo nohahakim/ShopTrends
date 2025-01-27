@@ -25,7 +25,7 @@ const databaseURL =
 const sessionConfig = {
   maxAge: 60 * 60 * 24 * 360, // How long they stay signed in?
   secret: process.env.COOKIE_SECRET,
-  sameSite: "none",
+  sameSite: "None",
   secure: process.env.NODE_ENV === "production",
 };
 
@@ -55,6 +55,11 @@ export default withAuth(
       },
       extendExpressApp: (app, createContext) => {
         app.set("trust proxy", 1);
+        app.use((req, res, next) => {
+          console.log("Request Protocol:", req.protocol);
+          console.log("Request Secure:", req.secure);
+          next();
+        });
       },
     },
     db: {
