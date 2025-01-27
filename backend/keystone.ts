@@ -25,7 +25,7 @@ const databaseURL =
 const sessionConfig = {
   maxAge: 60 * 60 * 24 * 360, // How long they stay signed in?
   secret: process.env.COOKIE_SECRET,
-  sameSite: "none",
+  sameSite: "None",
   // secure: process.env.NODE_ENV === "production",
   secure: true,
 };
@@ -82,9 +82,17 @@ export default withAuth(
         // console.log(session);
         !!session?.data,
     },
-    session: withItemData(statelessSessions(sessionConfig), {
-      // GraphQL Query
-      User: `id name email role { ${permissionsList.join(" ")} }`,
-    }),
-  })
-);
+    session: withItemData(
+      statelessSessions({
+        ...sessionConfig,
+        // Explicitly set cookie properties
+        cookie: {
+          ...sessionConfig,
+          sameSite: 'None',
+          secure: true,
+        }
+      }),
+      {
+        User: `id name email role { ${permissionsList.join(" ")} }`,
+      }
+    )
