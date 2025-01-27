@@ -28,7 +28,6 @@ const sessionConfig = {
   sameSite: "none",
   secure: process.env.NODE_ENV === "production",
 };
-console.log(process.env.NODE_ENV);
 
 const { withAuth } = createAuth({
   listKey: "User",
@@ -51,7 +50,7 @@ export default withAuth(
     // @ts-ignore
     server: {
       cors: {
-        origin: ["https://shoptrends-frontend.onrender.com"],
+        origin: [process.env.FRONTEND_URL],
         credentials: true,
       },
     },
