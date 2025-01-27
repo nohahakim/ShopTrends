@@ -87,3 +87,4 @@ export default withAuth(
     }),
   })
 );
+console.log("Session Config:", sessionConfig);
