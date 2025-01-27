@@ -8,6 +8,4 @@ export const endpoint =
     ? `http://localhost:3000/api/graphql`
     : `https://shoptrends-pgkd.onrender.com/api/graphql`;
 
-export const perPage = 2;
-
 export const perPage = 4;
