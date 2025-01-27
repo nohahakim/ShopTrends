@@ -25,8 +25,9 @@ const databaseURL =
 const sessionConfig = {
   maxAge: 60 * 60 * 24 * 360, // How long they stay signed in?
   secret: process.env.COOKIE_SECRET,
-  // sameSite: process.env.NODE_ENV === "none",
-  // secure: process.env.NODE_ENV === "production",
+
+  secure: true,
+  sameSite: "none",
 };
 
 const { withAuth } = createAuth({
@@ -49,10 +50,10 @@ export default withAuth(
   config({
     // @ts-ignore
     server: {
-      // cors: {
-      //   origin: [process.env.FRONTEND_URL],
-      //   credentials: true,
-      // },
+      cors: {
+        origin: [process.env.FRONTEND_URL],
+        credentials: true,
+      },
     },
     db: {
       adapter: "mongoose",
