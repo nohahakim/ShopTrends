@@ -26,7 +26,8 @@ const sessionConfig = {
   maxAge: 60 * 60 * 24 * 360, // How long they stay signed in?
   secret: process.env.COOKIE_SECRET,
   sameSite: "none",
-  secure: process.env.NODE_ENV === "production",
+  // secure: process.env.NODE_ENV === "production",
+  secure: true,
 };
 
 const { withAuth } = createAuth({
@@ -50,7 +51,15 @@ export default withAuth(
     // @ts-ignore
     server: {
       cors: {
-        origin: [process.env.FRONTEND_URL],
+        origin: [
+          `${process.env.FRONTEND_URL}`,
+          `https://${process.env.FRONTEND_URL}`,
+          `https://www.${process.env.FRONTEND_URL}`,
+          `https://staging.${process.env.FRONTEND_URL}`,
+          `http://localhost:7777`,
+          "*",
+        ],
+
         credentials: true,
       },
     },
