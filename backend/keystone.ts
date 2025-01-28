@@ -49,13 +49,17 @@ const { withAuth } = createAuth({
 export default withAuth(
   config({
     // @ts-ignore
+    graphql: {
+      apolloConfig: {
+        introspection: true,
+        playground: true,
+      },
+    },
     server: {
       cors: {
         origin: [process.env.FRONTEND_URL],
         credentials: true,
       },
-      playground: true,
-      introspection: true,
     },
     db: {
       adapter: "mongoose",
