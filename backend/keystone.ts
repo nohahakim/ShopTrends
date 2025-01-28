@@ -51,7 +51,7 @@ export default withAuth(
     // @ts-ignore
     graphql: {
       config: {
-        endpoint: '/api/graphql',
+        endpoint: "/api/graphql",
         shadowCRUD: true,
         playgroundAlways: true,
         depthLimit: 10,
@@ -60,6 +60,7 @@ export default withAuth(
           tracing: false,
           introspection: true,
         },
+      },
     },
     server: {
       cors: {
