@@ -15,10 +15,11 @@ const generatedPermissions = Object.fromEntries(
   ])
 );
 
+// Permissions check if someone meets a criteria - yes or no.
 export const permissions = {
   ...generatedPermissions,
   isAwesome({ session }: ListAccessArgs): boolean {
-    return true;
+    return session?.data.name.includes("wes");
   },
 };
 
@@ -59,9 +60,6 @@ export const rules = {
     return { order: { user: { id: session.itemId } } };
   },
   canReadProducts({ session }: ListAccessArgs) {
-    // if (!isSignedIn({ session })) {
-    //   return false;
-    // }
     if (permissions.canManageProducts({ session })) {
       return true; // They can read everything!
     }

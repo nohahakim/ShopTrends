@@ -19,15 +19,11 @@ import { extendGraphqlSchema } from "./mutations";
 
 function check(name: string) {}
 
-const databaseURL =
-  process.env.DATABASE_URL || "mongodb://localhost/keystone-sick-fits-tutorial";
+const databaseURL = process.env.DATABASE_URL;
 
 const sessionConfig = {
   maxAge: 60 * 60 * 24 * 360, // How long they stay signed in?
   secret: process.env.COOKIE_SECRET,
-
-  secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
 };
 
 const { withAuth } = createAuth({
@@ -49,24 +45,11 @@ const { withAuth } = createAuth({
 export default withAuth(
   config({
     // @ts-ignore
-    graphql: {
-      config: {
-        endpoint: "/api/graphql",
-        shadowCRUD: true,
-        playgroundAlways: true,
-        depthLimit: 10,
-        amountLimit: 100,
-        apolloServer: {
-          tracing: false,
-          introspection: true,
-        },
-      },
-    },
     server: {
-      cors: {
-        origin: [process.env.FRONTEND_URL, process.env.BACKEND_URL],
-        credentials: true,
-      },
+      // cors: {
+      //   origin: [process.env.FRONTEND_URL],
+      //   credentials: true,
+      // },
     },
     db: {
       adapter: "mongoose",
