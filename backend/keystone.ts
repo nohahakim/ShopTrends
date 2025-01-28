@@ -27,7 +27,7 @@ const sessionConfig = {
   secret: process.env.COOKIE_SECRET,
 
   secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
 };
 
 const { withAuth } = createAuth({
@@ -50,10 +50,16 @@ export default withAuth(
   config({
     // @ts-ignore
     graphql: {
-      apolloConfig: {
-        introspection: true,
-        playground: true,
-      },
+      config: {
+        endpoint: '/api/graphql',
+        shadowCRUD: true,
+        playgroundAlways: true,
+        depthLimit: 10,
+        amountLimit: 100,
+        apolloServer: {
+          tracing: false,
+          introspection: true,
+        },
     },
     server: {
       cors: {
